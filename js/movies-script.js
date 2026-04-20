@@ -118,6 +118,51 @@ function displayMovies(movieList) {
   // før: movieList.forEach((item) => {
   // her opretter jeg en html struktur, hvor der skal være data fra min js-datastruktur
   // før: moviesContainer.innerHTML += `
+
+  // laver en funktion med filterMovies()
+  function filterMovies() {
+    // Henter den valgte kategori fra dropdown-menuen
+    const selectedValue = selectedCategory.value;
+
+    // Henter søgeteksten fra søgefeltet, laver indholdet om til små bogstaver og fjerner unødvendige mellemrum før og efter søgeteksten
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    // Vi starter med alle udstillinger fra listen(array-exhibitions)
+    let filteredMovies = movies;
+
+    // Alle betyder perioder
+    // Vi filtere kun hvis brugeren har valgt noget andet end "Alle"
+    if (selectedValue != "Alle") {
+      filteredMovies = filteredMovies.filter((item) => {
+        return item.title === selectedValue;
+      });
+    }
+  }
+  if (searchTerm != "") {
+    filteredMovies = filteredMovies.filter((item) => {
+      return item.title.toLowerCase().includes(searchTerm);
+    });
+  }
+
+  // Kalder på funktionerne ved at sætte en lytter på variablen selectedCategory (dropdownmenu), som lytter efter ændringer
+  displayMovies(filteredMovies);
+  // Sætter en addeventlistener på variablen searchInput (søgefeltet), som lytter på ændringer i søgefeltet
+  searchInput.addEventListener("input", filterMovies);
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    filterMovies();
+  });
+}
+
+// Ændre på funktionen
+selectedCategory.addEventListener("change", filterMovies);
+
+// Her opretter jeg en funktion, som skal vise udstillingerne i browseren.
+// Funktionen modtager en liste med udstillinger som parameter.
+function displayMovies(movieList) {
+  // Her opbygger vi et nyt array med map() basererert på vores exhibition-array (liste)
+
   const html = movieList
     .map((movie) => {
       return `
