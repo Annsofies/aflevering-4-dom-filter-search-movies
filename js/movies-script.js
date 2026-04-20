@@ -1,7 +1,5 @@
 "use strict";
 
-// Opgave 3 – Opret datastrukturen movies med de første 5 film.
-// Opgave 11 – Tilføj de øvrige film fra movies.txt filen
 // Hvert objekt skal have følgende properties: id, title, genre, year, duration, img, url
 const movies = [
   {
@@ -96,22 +94,11 @@ const movies = [
   },
 ];
 
-// Opgave 4 – Opret variablen moviesContainer
-// Her opretter jeg en variabel som henter eller peger på id="exhibition-container" atribuetten over i html
+// Her opretter jeg en variabel som henter eller peger på id="movies-container" atribuetten over i html
 const moviesContainer = document.querySelector("#movies-container");
-
-// Opgave 5 – Opret funktionen displayMovies(movieList)
-// Opgave 6 – Tøm containeren før filmene vises
-// Opgave 7 – Brug forEach() til at gennemløbe filmene
-// Opgave 8 – Vis film med innerHTML
-// Opgave 9 – Tilføj billede og link
-// Opgave 3.6 – Brug map() til at gennemløbe filmene
-// Opgave 3.7 – Returnér HTML inde i map()
-// Opgave 3.8 – Erstat pladsholderne med data fra movie
-// Opgave 3.9 – Saml HTML-strengene med join("")
-// Opgave 3.10 – Indsæt den færdige HTML i DOM’en
-// Opgave 3.11 – Kald funktionen med filmdata
-// Opgave 3.12 – Tilføj de resterende film fra movies.txt
+const selectedCategory = document.querySelector("#selected-category");
+const searchInput = document.querySelector("#search-input");
+const form = document.querySelector("#search-form");
 
 function displayMovies(movieList) {
   // før: moviesContainer.innerHTML = "";
@@ -133,35 +120,35 @@ function displayMovies(movieList) {
     // Alle betyder perioder
     // Vi filtere kun hvis brugeren har valgt noget andet end "Alle"
     if (selectedValue != "Alle") {
-      filteredMovies = filteredMovies.filter((item) => {
-        return item.title === selectedValue;
+      filteredMovies = filteredMovies.filter((movie) => {
+        return movie.title === selectedValue;
       });
     }
   }
   if (searchTerm != "") {
-    filteredMovies = filteredMovies.filter((item) => {
-      return item.title.toLowerCase().includes(searchTerm);
+    filteredMovies = filteredMovies.filter((movie) => {
+      return movie.title.toLowerCase().includes(searchTerm);
     });
   }
-
   // Kalder på funktionerne ved at sætte en lytter på variablen selectedCategory (dropdownmenu), som lytter efter ændringer
   displayMovies(filteredMovies);
-  // Sætter en addeventlistener på variablen searchInput (søgefeltet), som lytter på ændringer i søgefeltet
-  searchInput.addEventListener("input", filterMovies);
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    filterMovies();
-  });
 }
+
+// Sætter en addeventlistener på variablen searchInput (søgefeltet), som lytter på ændringer i søgefeltet
+searchInput.addEventListener("input", filterMovies);
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  filterMovies();
+});
 
 // Ændre på funktionen
 selectedCategory.addEventListener("change", filterMovies);
 
-// Her opretter jeg en funktion, som skal vise udstillingerne i browseren.
-// Funktionen modtager en liste med udstillinger som parameter.
+// Her opretter jeg en funktion, som skal vise filmene
+// Funktionen modtager en liste med film som parameter
 function displayMovies(movieList) {
-  // Her opbygger vi et nyt array med map() basererert på vores exhibition-array (liste)
+  // Her opbygger vi et nyt array med map() basererert på vores movie-array (liste)
 
   const html = movieList
     .map((movie) => {
@@ -187,6 +174,5 @@ function displayMovies(movieList) {
   moviesContainer.innerHTML = html;
 }
 
-// Opgave 10 – Kald funktionen med filmdata
-// Her kalder jeg funktionen og sender hele exhibitions-arrayet med ind som argument.
+// Her kalder jeg funktionen og sender hele movie-arrayet med ind som argument.
 displayMovies(movies);
