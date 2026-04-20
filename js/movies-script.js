@@ -123,9 +123,11 @@ function displayMovies(movieList) {
       return `
     <article>
         <h2>${movie.title}</h2>
-        <p>Genre: ${movie.genre}</p>
-        <p>År: ${movie.year}</p>
-        <p>Varighed: ${movie.duration}</p>
+        <ul>
+            <li>Genre: ${movie.genre}</li>
+            <li>År: ${movie.year}</li>
+            <li>Varighed: ${movie.duration}</li>
+        </ul>
 
         <figure>
             <a href="${movie.url}" target="_blank" rel="noopener noreferrer">
