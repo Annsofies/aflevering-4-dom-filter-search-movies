@@ -96,60 +96,12 @@ const movies = [
 
 // Her opretter jeg en variabel som henter eller peger på id="movies-container" atribuetten over i html
 const moviesContainer = document.querySelector("#movies-container");
-const selectedCategory = document.querySelector("#selected-category");
-const searchInput = document.querySelector("#search-input");
-const form = document.querySelector("#search-form");
+const selectedCategory = document.querySelector("#category-select");
+const searchInput = document.querySelector("#gsearch");
+const form = document.querySelector("form");
 
-function displayMovies(movieList) {
-  // før: moviesContainer.innerHTML = "";
-  // før: movieList.forEach((item) => {
-  // her opretter jeg en html struktur, hvor der skal være data fra min js-datastruktur
-  // før: moviesContainer.innerHTML += `
-
-  // laver en funktion med filterMovies()
-  function filterMovies() {
-    // Henter den valgte kategori fra dropdown-menuen
-    const selectedValue = selectedCategory.value;
-
-    // Henter søgeteksten fra søgefeltet, laver indholdet om til små bogstaver og fjerner unødvendige mellemrum før og efter søgeteksten
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    // Vi starter med alle udstillinger fra listen(array-exhibitions)
-    let filteredMovies = movies;
-
-    // Alle betyder perioder
-    // Vi filtere kun hvis brugeren har valgt noget andet end "Alle"
-    if (selectedValue != "Alle") {
-      filteredMovies = filteredMovies.filter((movie) => {
-        return movie.title === selectedValue;
-      });
-    }
-  }
-  if (searchTerm != "") {
-    filteredMovies = filteredMovies.filter((movie) => {
-      return movie.title.toLowerCase().includes(searchTerm);
-    });
-  }
-  // Kalder på funktionerne ved at sætte en lytter på variablen selectedCategory (dropdownmenu), som lytter efter ændringer
-  displayMovies(filteredMovies);
-}
-
-// Sætter en addeventlistener på variablen searchInput (søgefeltet), som lytter på ændringer i søgefeltet
-searchInput.addEventListener("input", filterMovies);
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  filterMovies();
-});
-
-// Ændre på funktionen
-selectedCategory.addEventListener("change", filterMovies);
-
-// Her opretter jeg en funktion, som skal vise filmene
-// Funktionen modtager en liste med film som parameter
 function displayMovies(movieList) {
   // Her opbygger vi et nyt array med map() basererert på vores movie-array (liste)
-
   const html = movieList
     .map((movie) => {
       return `
@@ -169,10 +121,42 @@ function displayMovies(movieList) {
         </figure>
    </article>`;
     })
-    .join(""); // Her samler man det hele med joint("") til en samlet html-streng
+    .join(""); // Her samler man det hele med join("") til en samlet html-streng
 
   moviesContainer.innerHTML = html;
 }
+
+function filterMovies() {
+  const selectedValue = selectedCategory.value;
+  const searchTerm = searchInput.value.toLowerCase().trim();
+
+  let filteredMovies = movies;
+
+  if (selectedValue !== "Alle") {
+    filteredMovies = filteredMovies.filter((movie) => {
+      return movie.genre === selectedValue;
+    });
+  }
+
+  if (searchTerm !== "") {
+    filteredMovies = filteredMovies.filter((movie) => {
+      return movie.title.toLowerCase().includes(searchTerm);
+    });
+  }
+
+  displayMovies(filteredMovies);
+}
+
+// Sætter en addeventlistener på variablen searchInput (søgefeltet), som lytter på ændringer i søgefeltet
+searchInput.addEventListener("input", filterMovies);
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  filterMovies();
+});
+
+// Ændre på funktionen
+selectedCategory.addEventListener("change", filterMovies);
 
 // Her kalder jeg funktionen og sender hele movie-arrayet med ind som argument.
 displayMovies(movies);
